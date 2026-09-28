@@ -1,0 +1,698 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Student Dashboard
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/dashboard.css' %}"
+    >
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="dashboard-nav">
+
+    <div class="nav-left">
+
+        <h1>
+            FCFMT Clinic HMS
+        </h1>
+
+        <p>
+            Student Medical Dashboard
+        </p>
+
+    </div>
+
+    <div class="nav-right">
+
+        <div class="student-meta">
+
+            <span class="welcome-text">
+                Welcome
+            </span>
+
+            <h3>
+                {{ student.full_name }}
+            </h3>
+
+        </div>
+
+        <a
+            href="{% url 'logout' %}"
+            class="logout-btn"
+        >
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<div class="dashboard-container">
+
+    
+
+    <!-- ================= PROFILE CARD ================= -->
+    <div class="profile-card">
+
+        <div class="profile-image-wrapper">
+
+            {% if student.photo %}
+
+            <img
+                src="{{ student.photo.url }}"
+                alt="Student Photo"
+                class="profile-img"
+            >
+
+            {% else %}
+
+            <div class="no-img">
+                No Image
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        <div class="profile-info">
+
+            <h2>
+                {{ student.full_name }}
+            </h2>
+
+            <p class="reg-number">
+                {{ student.reg_number }}
+            </p>
+
+            <p class="department-level">
+                {{ student.department }}
+                —
+                {{ student.level }}
+            </p>
+
+        </div>
+
+        <div class="profile-actions">
+
+            <a
+                href="{% url 'download_pdf' %}"
+                class="btn-primary"
+            >
+                Download ID Card
+            </a>
+
+            <button
+                class="btn-secondary"
+                onclick="openModal()"
+            >
+                Book Appointment
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- ================= RIGHT CONTENT ================= -->
+    <div class="dashboard-content">
+
+        <!-- ================= STUDENT INFO ================= -->
+        <div class="details-card">
+
+            <div class="section-title">
+
+                <h2>
+                    Student Information
+                </h2>
+
+            </div>
+
+            <div class="info-grid">
+
+                <div class="info-box">
+
+                    <span>
+                        Department
+                    </span>
+
+                    <h3>
+                        {{ student.department }}
+                    </h3>
+
+                </div>
+
+                <div class="info-box">
+
+                    <span>
+                        Level
+                    </span>
+
+                    <h3>
+                        {{ student.level }}
+                    </h3>
+
+                </div>
+
+                <div class="info-box">
+
+                    <span>
+                        Phone Number
+                    </span>
+
+                    <h3>
+                        {{ student.phone }}
+                    </h3>
+
+                </div>
+
+                <div class="info-box">
+
+                    <span>
+                        Blood Group
+                    </span>
+
+                    <h3>
+                        {{ student.blood_group }}
+                    </h3>
+
+                </div>
+
+                <div class="info-box">
+
+                    <span>
+                        Genotype
+                    </span>
+
+                    <h3>
+                        {{ student.genotype }}
+                    </h3>
+
+                </div>
+
+                <div class="info-box">
+
+                    <span>
+                        Date Of Birth
+                    </span>
+
+                    <h3>
+                        {{ student.date_of_birth }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ================= APPOINTMENTS ================= -->
+        <div class="appointments-card">
+
+            <div class="section-title">
+
+                <h2>
+                    My Appointments
+                </h2>
+
+            </div>
+
+            {% if appointments %}
+
+            <div class="appointment-grid">
+
+                {% for app in appointments %}
+
+                <div class="appointment-card">
+
+                    <div class="appointment-header">
+
+                        <h3>
+                            {{ app.appointment_type }}
+                        </h3>
+
+                        <span class="status-badge {{ app.status|lower }}">
+                            {{ app.status }}
+                        </span>
+
+                    </div>
+
+                    <div class="appointment-body">
+
+                        <div class="appointment-item">
+
+                            <span>
+                                Appointment ID
+                            </span>
+
+                            <h4>
+                                {{ app.appointment_id }}
+                            </h4>
+
+                        </div>
+
+                        <div class="appointment-item">
+
+                            <span>
+                                Assigned Doctor
+                            </span>
+
+                            <h4>
+
+                                {% if app.doctor %}
+
+                                    Dr. {{ app.doctor.name }}
+
+                                {% else %}
+
+                                    Pending Assignment
+
+                                {% endif %}
+
+                            </h4>
+
+                        </div>
+
+                        <div class="appointment-item">
+
+                            <span>
+                                Appointment Date
+                            </span>
+
+                            <h4>
+                                {{ app.date }}
+                            </h4>
+
+                        </div>
+
+                        <div class="appointment-item">
+
+                            <span>
+                                Appointment Time
+                            </span>
+
+                            <h4>
+
+                                {% if app.time %}
+
+                                    {{ app.time }}
+
+                                {% else %}
+
+                                    Awaiting Admin Scheduling
+
+                                {% endif %}
+
+                            </h4>
+
+                        </div>
+
+                        <div class="appointment-item">
+
+                            <span>
+                                Booking Status
+                            </span>
+
+                            <h4>
+                                {{ app.status }}
+                            </h4>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ================= ACTION BUTTONS ================= -->
+                    <div class="appointment-actions">
+
+                        {% if app.status == "APPROVED" %}
+
+                        <a
+                            href="{% url 'download_appointment_pdf' app.id %}"
+                            class="btn-primary action-btn"
+                        >
+                            Download Details
+                        </a>
+
+                        {% endif %}
+
+                        {% if app.status != "COMPLETED" and app.status != "CANCELLED" %}
+
+                        <a
+                            href="{% url 'cancel_appointment' app.id %}"
+                            class="action-btn cancel-btn"
+                            onclick="return confirm('Cancel this appointment?')"
+                        >
+                            Cancel Appointment
+                        </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-state">
+
+                <h3>
+                    No Appointments Yet
+                </h3>
+
+                <p>
+                    Your medical appointments will appear here after booking.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= BOOK APPOINTMENT MODAL ================= -->
+<div id="appointmentModal" class="modal">
+
+        <div class="modal-content">
+
+            <span
+                class="close-btn"
+                onclick="closeModal()"
+            >
+                &times;
+            </span>
+
+            <h2>
+                Book Appointment
+            </h2>
+
+            {% if messages %}
+            <div class="alert-container">
+                {% for message in messages %}
+                    <div class="alert-message {{ message.tags }}">
+                        <span>{{ message }}</span>
+                        <button class="close-alert" onclick="this.parentElement.remove()">&times;</button>
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form
+                method="POST"
+                action="{% url 'appointment' %}"
+            >
+
+                {% csrf_token %}
+
+                <!-- ================= APPOINTMENT TYPE ================= -->
+                <div class="form-group">
+
+                    <label for="appointment_type">
+                        Appointment Type
+                    </label>
+
+                    <select
+                        id="appointment_type"
+                        name="appointment_type"
+                        class="custom-select"
+                        required
+                    >
+
+                        <option value="">
+                            Select Appointment Type
+                        </option>
+
+                        <option value="Freshers">
+                            Freshers Medical
+                        </option>
+
+                        <option value="Regular">
+                            Regular Checkup
+                        </option>
+
+                        <option value="Emergency">
+                            Emergency
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- ================= DATE ================= -->
+                <div class="form-group">
+
+                    <label for="appointmentDate">
+                        Appointment Date
+                    </label>
+
+                    <input
+                        type="date"
+                        name="date"
+                        id="appointmentDate"
+                        required
+                    >
+
+                </div>
+
+                <!-- ================= TIME ================= -->
+                <div
+                    class="form-group"
+                    id="timeWrapper"
+                >
+
+                    <label for="time">
+                        Appointment Time
+                    </label>
+
+                    <select
+                        id="time"
+                        name="time"
+                        class="custom-select"
+                    >
+
+                        <option value="">
+                            Select Time
+                        </option>
+
+                        <option value="09:00">
+                            9 AM
+                        </option>
+
+                        <option value="10:00">
+                            10 AM
+                        </option>
+
+                        <option value="11:00">
+                            11 AM
+                        </option>
+
+                        <option value="12:00">
+                            12 PM
+                        </option>
+
+                        <option value="13:00">
+                            1 PM
+                        </option>
+
+                        <option value="14:00">
+                            2 PM
+                        </option>
+
+                        <option value="15:00">
+                            3 PM
+                        </option>
+
+                    </select>
+
+                    <small class="time-note">
+                        Freshers Medical only.
+                        Maximum of 4 students per time slot from 9AM - 3PM.
+                    </small>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="btn-primary full-btn"
+                >
+                    Confirm Booking
+                </button>
+
+            </form>
+
+        </div>
+
+</div>
+
+<!-- ================= JAVASCRIPT ================= -->
+<script>
+
+/* =========================================================
+OPEN MODAL
+========================================================= */
+function openModal(){
+
+    document.getElementById(
+        "appointmentModal"
+    ).style.display = "flex";
+}
+
+/* =========================================================
+CLOSE MODAL
+========================================================= */
+function closeModal(){
+
+    document.getElementById(
+        "appointmentModal"
+    ).style.display = "none";
+}
+
+/* =========================================================
+CLOSE ON OUTSIDE CLICK
+========================================================= */
+window.onclick = function(e){
+
+    const modal =
+    document.getElementById(
+        "appointmentModal"
+    );
+
+    if(e.target === modal){
+
+        modal.style.display = "none";
+    }
+}
+
+/* =========================================================
+WEEKEND VALIDATION
+========================================================= */
+const appointmentDate =
+document.getElementById(
+    "appointmentDate"
+);
+
+appointmentDate.addEventListener(
+    "input",
+    function(){
+
+        const selected =
+        new Date(this.value);
+
+        const day =
+        selected.getDay();
+
+        if(day === 0 || day === 6){
+
+            alert(
+                "Weekend bookings are unavailable."
+            );
+
+            this.value = "";
+        }
+
+    }
+);
+
+/* =========================================================
+SHOW TIME ONLY FOR FRESHERS
+========================================================= */
+const appointmentType =
+document.getElementById(
+    "appointment_type"
+);
+
+const timeWrapper =
+document.getElementById(
+    "timeWrapper"
+);
+
+const timeSelect =
+document.getElementById(
+    "time"
+);
+
+function toggleTimeField(){
+
+    if(
+        appointmentType.value === "Freshers"
+    ){
+
+        timeWrapper.style.display = "block";
+
+        timeSelect.setAttribute(
+            "required",
+            true
+        );
+
+    }else{
+
+        timeWrapper.style.display = "none";
+
+        timeSelect.removeAttribute(
+            "required"
+        );
+
+        timeSelect.value = "";
+    }
+}
+
+appointmentType.addEventListener(
+    "change",
+    toggleTimeField
+);
+
+/* =========================================================
+INITIAL LOAD
+========================================================= */
+toggleTimeField();
+
+</script>
+
+{% if messages %}
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+    const modal = document.getElementById("appointmentModal");
+
+    // open modal automatically
+    modal.style.display = "flex";
+
+    // auto-hide alerts after 5 seconds
+    setTimeout(() => {
+        document.querySelectorAll(".alert-message").forEach(el => {
+            el.style.opacity = "0";
+            el.style.transition = "0.3s";
+            setTimeout(() => el.remove(), 300);
+        });
+    }, 5000);
+
+});
+</script>
+{% endif %}
+
+</body>
+</html>

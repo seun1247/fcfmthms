@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Appointment Status</title>
+</head>
+
+<body style="margin:0; padding:0; background-color:#f4f6f8; font-family:Arial, sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="padding:20px;">
+<tr>
+<td align="center">
+
+<!-- CONTAINER -->
+<table width="600" cellpadding="0" cellspacing="0" style="background:white; border-radius:10px; overflow:hidden;">
+
+    <!-- HEADER -->
+    <tr>
+        <td style="background:#0d47a1; color:white; text-align:center; padding:20px;">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" width="60" style="display:block; margin:auto;">
+            <h2 style="margin:10px 0 5px;">FCFMT CLINIC</h2>
+            <p style="margin:0;">Hospital Management System</p>
+        </td>
+    </tr>
+
+    <!-- BODY -->
+    <tr>
+        <td style="padding:25px;">
+
+            <!-- STATUS TITLE -->
+            <p style="
+                font-size:20px;
+                font-weight:bold;
+                margin-bottom:10px;
+            "
+            color="{{ status_color }}">
+                {{ status_title }}
+            </p>
+
+            <p>Hello {{ name }},</p>
+
+            <p>{{ message }}</p>
+
+            <!-- TIMELINE -->
+            <table width="100%" style="margin:20px 0; text-align:center; font-size:12px;">
+                <tr>
+
+                    <!-- BOOKED -->
+                    <td>
+                        <div style="font-size:20px; color:green;">✔</div>
+                        <div>Booked</div>
+                    </td>
+
+                    <!-- LINE -->
+                    <td width="40">
+                        <div
+                            style="height:2px;"
+                            bgcolor="{{ line1_color }}">
+                        </div>
+                    </td>
+
+                    <!-- APPROVED -->
+                    <td>
+                        {% if status == "APPROVED" or status == "COMPLETED" %}
+                            <div style="font-size:20px; color:green;">✔</div>
+                        {% elif status == "CANCELLED" %}
+                            <div style="font-size:20px; color:red;">✖</div>
+                        {% else %}
+                            <div style="font-size:20px;">⏳</div>
+                        {% endif %}
+                        <div>Approved</div>
+                    </td>
+
+                    <!-- LINE -->
+                    <td width="40">
+                        <div
+                            style="height:2px;"
+                            bgcolor="{{ line2_color }}">
+                        </div>
+                    </td>
+
+                    <!-- COMPLETED -->
+                    <td>
+                        {% if status == "COMPLETED" %}
+                            <div style="font-size:20px; color:green;">✔</div>
+                        {% elif status == "CANCELLED" %}
+                            <div style="font-size:20px; color:red;">✖</div>
+                        {% else %}
+                            <div style="font-size:20px;">⏳</div>
+                        {% endif %}
+                        <div>Completed</div>
+                    </td>
+
+                </tr>
+            </table>
+
+            <!-- DETAILS BOX -->
+            <table width="100%" style="background:#f1f3f6; padding:15px; border-radius:8px;">
+                <tr><td><strong>Appointment Type:</strong> {{ appointment_type }}</td></tr>
+                <tr><td><strong>Doctor:</strong> {{ doctor }}</td></tr>
+                <tr><td><strong>Date:</strong> {{ date }}</td></tr>
+                <tr><td><strong>Time:</strong> {{ time }}</td></tr>
+                <tr><td><strong>Status:</strong> {{ status_title }}</td></tr>
+            </table>
+
+            <!-- EXTRA NOTE -->
+            {% if extra_note %}
+            <p style="margin-top:15px;"><strong>{{ extra_note }}</strong></p>
+            {% endif %}
+
+            <p style="margin-top:20px;">
+                Thank you,<br>
+                FCFMT Clinic Team
+            </p>
+
+        </td>
+    </tr>
+
+    <!-- FOOTER -->
+    <tr>
+        <td style="background:#0d47a1; color:white; text-align:center; padding:15px; font-size:12px;">
+            This is an automated message. Do not reply.
+        </td>
+    </tr>
+
+</table>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>

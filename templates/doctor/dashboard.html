@@ -1,0 +1,392 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Doctor Dashboard</title>
+
+    <link rel="stylesheet" href="{% static 'css/doctor.css' %}">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="dashboard-nav">
+
+    <div class="nav-left">
+        <h1>FCFMT Clinic HMS</h1>
+        <p>Doctor Dashboard</p>
+    </div>
+
+    <div class="nav-right">
+
+        <div class="doctor-meta">
+            <span class="welcome-text">
+                Welcome Back
+            </span>
+
+            <h3>
+                Dr. {{ doctor.name }}
+            </h3>
+        </div>
+
+        <a href="{% url 'doctor_logout' %}" class="logout-btn">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+<!-- ================= MAIN CONTAINER ================= -->
+<div class="dashboard-container">
+
+    <!-- ================= PROFILE SIDEBAR ================= -->
+    <aside class="profile-card">
+
+        <div class="profile-image-wrapper">
+
+            {% if doctor.photo %}
+                <img src="{{ doctor.photo.url }}"
+                     alt="Doctor Image"
+                     class="profile-img">
+            {% else %}
+                <div class="no-img">
+                    {{ doctor.name|slice:":1" }}
+                </div>
+            {% endif %}
+
+        </div>
+
+        <div class="profile-info">
+
+            <h2>
+                Dr. {{ doctor.name }}
+            </h2>
+
+            <p class="reg-number">
+                ID: {{ doctor.doctor_id }}
+            </p>
+
+            <p class="department-level">
+                {{ doctor.department }}
+            </p>
+
+        </div>
+
+    </aside>
+
+    <!-- ================= CONTENT ================= -->
+    <main class="dashboard-content">
+
+        <!-- ================= MESSAGES ================= -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- ================= ASSIGNED PATIENTS ================= -->
+        <section class="appointments-card">
+
+            <div class="section-title">
+                <h2>Assigned Patients</h2>
+            </div>
+
+            {% if appointments %}
+
+            <div class="appointment-grid">
+
+                {% for p in appointments %}
+
+                <div class="appointment-card">
+
+                    <div class="appointment-header">
+
+                        <h3>
+                            {{ p.student.full_name }}
+                        </h3>
+
+                        <span class="status-badge approved">
+                            {{ p.status }}
+                        </span>
+
+                    </div>
+
+                    <div class="appointment-body">
+
+                        <div class="appointment-item">
+                            <span>Reg Number</span>
+                            <h4>{{ p.student.reg_number }}</h4>
+                        </div>
+
+                        <div class="appointment-item">
+                            <span>Appointment Type</span>
+                            <h4>{{ p.appointment_type }}</h4>
+                        </div>
+
+                        <div class="appointment-item">
+                            <span>Date</span>
+                            <h4>{{ p.date }}</h4>
+                        </div>
+
+                        <div class="appointment-item">
+                            <span>Time</span>
+                            <h4>
+                                {% if p.time %}
+                                    {{ p.time }}
+                                {% else %}
+                                    Pending
+                                {% endif %}
+                            </h4>
+                        </div>
+
+                    </div>
+
+                    <div class="appointment-actions">
+
+                        <button type="button"
+                                class="btn-primary action-btn"
+                                onclick="openModal('{{ p.id }}')">
+
+                            Upload Medical Record
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-state">
+
+                <h3>No Assigned Patients</h3>
+
+                <p>
+                    Approved appointments will appear here.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+        <!-- ================= COMPLETED PATIENTS ================= -->
+        <section class="appointments-card">
+
+            <div class="section-title">
+                <h2>Completed Patients</h2>
+            </div>
+
+            {% if completed_appointments %}
+
+            <div class="appointment-grid">
+
+                {% for p in completed_appointments %}
+
+                <div class="appointment-card">
+
+                    <div class="appointment-header">
+
+                        <h3>
+                            {{ p.student.full_name }}
+                        </h3>
+
+                        <span class="status-badge completed">
+                            Completed
+                        </span>
+
+                    </div>
+
+                    <div class="appointment-body">
+
+                        <div class="appointment-item">
+                            <span>Reg Number</span>
+                            <h4>{{ p.student.reg_number }}</h4>
+                        </div>
+
+                        <div class="appointment-item">
+                            <span>Diagnosis</span>
+                            <h4>
+                                {{ p.diagnosis|default:"Not Provided" }}
+                            </h4>
+                        </div>
+
+                        <div class="appointment-item">
+                            <span>Prescription</span>
+                            <h4>
+                                {{ p.prescription|default:"Not Provided" }}
+                            </h4>
+                        </div>
+
+                        <div class="appointment-item">
+                            <span>Treated At</span>
+                            <h4>
+                                {{ p.treated_at }}
+                            </h4>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-state">
+
+                <h3>No Completed Patients</h3>
+
+                <p>
+                    Completed consultations will appear here.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</div>
+
+<!-- ================= MODAL ================= -->
+<div id="recordModal" class="modal">
+
+    <div class="modal-content">
+
+        <button class="close-btn"
+                type="button"
+                onclick="closeModal()">
+
+            &times;
+
+        </button>
+
+        <h2>Upload Medical Record</h2>
+
+        <form method="POST"
+              enctype="multipart/form-data"
+              action="{% url 'upload_record' %}">
+
+            {% csrf_token %}
+
+            <input type="hidden"
+                   name="appointment_id"
+                   id="appointmentId">
+
+            <div class="form-group">
+
+                <label for="diagnosis">
+                    Diagnosis
+                </label>
+
+                <input type="text"
+                       id="diagnosis"
+                       name="diagnosis"
+                       required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="prescription">
+                    Prescription
+                </label>
+
+                <input type="text"
+                       id="prescription"
+                       name="prescription"
+                       required>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="clinic_notes">
+                    Clinic Notes
+                </label>
+
+                <textarea id="clinic_notes"
+                          name="clinic_notes"
+                          rows="4"></textarea>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="file">
+                    Upload File
+                </label>
+
+                <input type="file"
+                       id="file"
+                       name="file">
+
+            </div>
+
+            <button type="submit"
+                    class="btn-primary full-btn">
+
+                Submit Medical Record
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- ================= JAVASCRIPT ================= -->
+<script>
+
+function openModal(id) {
+
+    document.getElementById("recordModal").style.display = "flex";
+
+    document.getElementById("appointmentId").value = id;
+}
+
+function closeModal() {
+
+    document.getElementById("recordModal").style.display = "none";
+}
+
+window.addEventListener("click", function(e) {
+
+    const modal = document.getElementById("recordModal");
+
+    if (e.target === modal) {
+
+        closeModal();
+    }
+});
+
+window.addEventListener("keydown", function(e){
+
+    if(e.key === "Escape"){
+
+        closeModal();
+    }
+});
+
+</script>
+
+</body>
+</html>

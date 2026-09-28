@@ -1,0 +1,1212 @@
+/* =========================================================
+   FONT + RESET
+========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --primary:#2563eb;
+    --primary-dark:#1d4ed8;
+    --secondary:#0f172a;
+
+    --bg:#f1f5f9;
+    --card:#ffffff;
+
+    --text:#0f172a;
+    --muted:#64748b;
+
+    --border:#e2e8f0;
+
+    --success:#16a34a;
+    --pending:#f59e0b;
+    --danger:#ef4444;
+
+    --shadow:
+        0 15px 40px rgba(15, 23, 42, 0.08);
+
+    --radius:24px;
+}
+
+/* =========================================================
+   BODY
+========================================================= */
+body{
+    font-family:'Inter', sans-serif;
+    background:linear-gradient(
+        180deg,
+        #eaf2ff 0%,
+        #f8fbff 100%
+    );
+
+    color:var(--text);
+    min-height:100vh;
+}
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+.dashboard-nav{
+    width:100%;
+
+    padding:24px 50px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a,
+            #1e3a8a
+        );
+
+    color:white;
+
+    position:sticky;
+    top:0;
+    z-index:100;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.15);
+}
+
+.nav-left h1{
+    font-size:34px;
+    font-weight:800;
+    letter-spacing:-1px;
+}
+
+.nav-left p{
+    margin-top:5px;
+    color:rgba(255,255,255,0.75);
+    font-size:15px;
+}
+
+.nav-right{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.student-meta{
+    text-align:right;
+}
+
+.welcome-text{
+    color:rgba(255,255,255,0.7);
+    font-size:13px;
+}
+
+.student-meta h3{
+    margin-top:4px;
+    font-size:18px;
+    font-weight:700;
+}
+
+.logout-btn{
+    background:#ef4444;
+    color:white;
+
+    padding:13px 22px;
+
+    border-radius:14px;
+
+    text-decoration:none;
+    font-weight:700;
+
+    transition:0.3s ease;
+}
+
+.logout-btn:hover{
+    background:#dc2626;
+    transform:translateY(-2px);
+}
+
+/* =========================================================
+   MAIN LAYOUT
+========================================================= */
+.dashboard-container{
+    width:100%;
+    max-width:1500px;
+
+    margin:35px auto;
+
+    padding:0 28px;
+
+    display:grid;
+    grid-template-columns:340px 1fr;
+    gap:28px;
+}
+
+/* =========================================================
+   PROFILE CARD
+========================================================= */
+.profile-card{
+    background:
+        linear-gradient(
+            180deg,
+            #0f172a,
+            #1e293b
+        );
+
+    border-radius:30px;
+
+    padding:30px;
+
+    color:white;
+
+    box-shadow:
+        0 20px 45px rgba(15,23,42,0.18);
+
+    height:fit-content;
+
+    position:sticky;
+    top:110px;
+
+    overflow:hidden;
+}
+
+.profile-card::before{
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+    height:220px;
+
+    background:rgba(255,255,255,0.06);
+
+    border-radius:50%;
+
+    top:-80px;
+    right:-70px;
+}
+
+/* =========================================================
+   PROFILE IMAGE
+========================================================= */
+.profile-image-wrapper{
+    display:flex;
+    justify-content:center;
+
+    position:relative;
+    z-index:2;
+}
+
+.profile-img{
+    width:150px;
+    height:150px;
+
+    border-radius:50%;
+    object-fit:cover;
+
+    border:5px solid rgba(255,255,255,0.2);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.25);
+}
+
+.no-img{
+    width:150px;
+    height:150px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,0.1);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-weight:700;
+}
+
+/* =========================================================
+   PROFILE INFO
+========================================================= */
+.profile-info{
+    margin-top:25px;
+    text-align:center;
+
+    position:relative;
+    z-index:2;
+}
+
+.profile-info h2{
+    font-size:31px;
+    font-weight:800;
+
+    line-height:1.2;
+}
+
+.reg-number{
+    margin-top:10px;
+
+    color:#cbd5e1;
+
+    font-size:15px;
+    font-weight:600;
+}
+
+.department-level{
+    margin-top:14px;
+
+    display:inline-block;
+
+    background:rgba(255,255,255,0.1);
+
+    padding:12px 18px;
+
+    border-radius:14px;
+
+    font-size:14px;
+    font-weight:700;
+
+    color:#dbeafe;
+}
+
+/* =========================================================
+   PROFILE BUTTONS
+========================================================= */
+.profile-actions{
+    margin-top:30px;
+
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+
+    position:relative;
+    z-index:2;
+}
+
+.btn-primary,
+.btn-secondary{
+    width:100%;
+
+    border:none;
+    border-radius:16px;
+
+    padding:16px;
+
+    font-size:15px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:0.3s ease;
+
+    text-align:center;
+    text-decoration:none;
+}
+
+.btn-primary{
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #3b82f6
+        );
+
+    color:white;
+}
+
+.btn-primary:hover{
+    transform:translateY(-3px);
+    box-shadow:
+        0 15px 30px rgba(37,99,235,0.3);
+}
+
+.btn-secondary{
+    background:rgba(255,255,255,0.08);
+
+    color:white;
+
+    border:1px solid rgba(255,255,255,0.1);
+}
+
+.btn-secondary:hover{
+    background:rgba(255,255,255,0.15);
+}
+
+/* =========================================================
+   RIGHT CONTENT
+========================================================= */
+.dashboard-content{
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+}
+
+/* =========================================================
+   CARDS
+========================================================= */
+.details-card,
+.appointments-card{
+    background:var(--card);
+
+    border-radius:30px;
+
+    padding:30px;
+
+    box-shadow:var(--shadow);
+
+    border:1px solid var(--border);
+}
+
+/* =========================================================
+   SECTION TITLES
+========================================================= */
+.section-title{
+    margin-bottom:25px;
+}
+
+.section-title h2{
+    font-size:30px;
+    font-weight:800;
+
+    color:var(--secondary);
+}
+
+/* =========================================================
+   INFO GRID
+========================================================= */
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.info-box{
+    background:#f8fbff;
+
+    border:1px solid #e2e8f0;
+
+    border-radius:22px;
+
+    padding:24px;
+
+    transition:0.3s ease;
+}
+
+.info-box:hover{
+    transform:translateY(-4px);
+
+    box-shadow:
+        0 15px 30px rgba(15,23,42,0.06);
+}
+
+.info-box span{
+    color:var(--muted);
+
+    font-size:14px;
+    font-weight:600;
+}
+
+.info-box h3{
+    margin-top:12px;
+
+    font-size:26px;
+    font-weight:800;
+
+    color:#0f172a;
+
+    line-height:1.3;
+}
+
+/* =========================================================
+   APPOINTMENT GRID
+========================================================= */
+.appointment-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:22px;
+}
+
+/* =========================================================
+   APPOINTMENT CARD
+========================================================= */
+.appointment-card{
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #f8fbff
+        );
+
+    border:1px solid #e2e8f0;
+
+    border-radius:24px;
+
+    padding:24px;
+
+    transition:0.3s ease;
+}
+
+.appointment-card:hover{
+    transform:translateY(-5px);
+
+    box-shadow:
+        0 15px 30px rgba(15,23,42,0.08);
+}
+
+.appointment-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:22px;
+}
+
+.appointment-header h3{
+    font-size:22px;
+    font-weight:800;
+
+    color:#0f172a;
+}
+
+.status-badge{
+    padding:8px 14px;
+
+    border-radius:50px;
+
+    font-size:12px;
+    font-weight:800;
+
+    text-transform:uppercase;
+}
+
+.pending{
+    background:#fff7ed;
+    color:#ea580c;
+}
+
+.completed{
+    background:#ecfdf5;
+    color:#16a34a;
+}
+
+.approved{
+    background:#eff6ff;
+    color:#2563eb;
+}
+
+/* =========================================================
+   APPOINTMENT BODY
+========================================================= */
+.appointment-body{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.appointment-item{
+    padding-bottom:14px;
+
+    border-bottom:1px solid #edf2f7;
+}
+
+.appointment-item:last-child{
+    border-bottom:none;
+    padding-bottom:0;
+}
+
+.appointment-item span{
+    color:var(--muted);
+
+    font-size:13px;
+    font-weight:600;
+}
+
+.appointment-item h4{
+    margin-top:8px;
+
+    font-size:17px;
+    font-weight:700;
+
+    color:#0f172a;
+}
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+.empty-state{
+    text-align:center;
+
+    padding:60px 20px;
+
+    background:#f8fbff;
+
+    border-radius:24px;
+
+    border:1px dashed #cbd5e1;
+}
+
+.empty-state h3{
+    font-size:30px;
+    color:#0f172a;
+
+    margin-bottom:12px;
+}
+
+.empty-state p{
+    color:var(--muted);
+    font-size:16px;
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+.modal{
+    display:none;
+
+    position:fixed;
+    inset:0;
+
+    background:rgba(15,23,42,0.65);
+
+    justify-content:center;
+    align-items:center;
+
+    padding:20px;
+
+    z-index:999;
+}
+
+.modal-content{
+    width:100%;
+    max-width:500px;
+
+    background:white;
+
+    border-radius:30px;
+
+    padding:35px;
+
+    position:relative;
+
+    animation:popup 0.3s ease;
+}
+
+.close-btn{
+    position:absolute;
+
+    top:18px;
+    right:24px;
+
+    font-size:32px;
+
+    cursor:pointer;
+
+    color:#64748b;
+}
+
+.modal-content h2{
+    font-size:34px;
+    font-weight:800;
+
+    color:#0f172a;
+
+    margin-bottom:24px;
+}
+
+.modal-content form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.modal-content label{
+    font-size:14px;
+    font-weight:700;
+
+    color:#334155;
+}
+
+.modal-content input,
+.modal-content select{
+    width:100%;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    border:1px solid #dbe4ee;
+
+    background:#f8fbff;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:0.3s ease;
+}
+
+.modal-content input:focus,
+.modal-content select:focus{
+    border-color:#2563eb;
+    background:white;
+}
+
+.full-btn{
+    margin-top:10px;
+}
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+@keyframes popup{
+
+    from{
+        opacity:0;
+        transform:translateY(20px) scale(0.96);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media(max-width:1100px){
+
+    .dashboard-container{
+        grid-template-columns:1fr;
+    }
+
+    .profile-card{
+        position:relative;
+        top:0;
+    }
+}
+
+@media(max-width:768px){
+
+    .dashboard-nav{
+        padding:22px;
+
+        flex-direction:column;
+        align-items:flex-start;
+
+        gap:20px;
+    }
+
+    .nav-right{
+        width:100%;
+        justify-content:space-between;
+    }
+
+    .dashboard-container{
+        padding:0 18px;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .section-title h2{
+        font-size:26px;
+    }
+
+    .profile-info h2{
+        font-size:26px;
+    }
+}
+
+@media(max-width:500px){
+
+    .dashboard-nav{
+        padding:18px;
+    }
+
+    .nav-left h1{
+        font-size:28px;
+    }
+
+    .student-meta h3{
+        font-size:15px;
+    }
+
+    .profile-card,
+    .details-card,
+    .appointments-card{
+        padding:22px;
+    }
+
+    .profile-img,
+    .no-img{
+        width:120px;
+        height:120px;
+    }
+
+    .modal-content{
+        padding:25px;
+    }
+
+    .modal-content h2{
+        font-size:28px;
+    }
+}
+/* =========================================================
+   FORM LAYOUT
+========================================================= */
+.modal-content form{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+}
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+/* =========================================================
+   LABELS
+========================================================= */
+.form-group label{
+    font-size:14px;
+    font-weight:700;
+    color:#334155;
+
+    letter-spacing:0.2px;
+}
+
+/* =========================================================
+   INPUTS + SELECTS
+========================================================= */
+.form-group input,
+.form-group select{
+    width:100%;
+
+    padding:16px 18px;
+
+    border:1px solid #dbe4ee;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #f8fbff,
+            #ffffff
+        );
+
+    font-size:15px;
+    font-weight:600;
+
+    line-height:1.4;
+
+    color:#0f172a;
+
+    outline:none;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.2s ease,
+        background 0.25s ease;
+}
+
+/* =========================================================
+   CUSTOM SELECT
+========================================================= */
+.form-group select{
+    cursor:pointer;
+
+    padding-right:52px;
+
+    color:#0f172a;
+
+    background-color:#ffffff;
+
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M6 8L10 12L14 8' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+
+    background-repeat:no-repeat;
+    background-position:right 18px center;
+    background-size:18px;
+}
+
+/* =========================================================
+   SELECT OPTIONS
+========================================================= */
+.form-group select option{
+    background:#ffffff;
+    color:#0f172a;
+
+    font-size:15px;
+    font-weight:500;
+}
+
+/* =========================================================
+   INPUT FOCUS
+========================================================= */
+.form-group input:focus,
+.form-group select:focus{
+    border-color:#2563eb;
+
+    background:white;
+
+    box-shadow:
+        0 0 0 4px rgba(37,99,235,0.12);
+
+    transform:translateY(-1px);
+}
+
+/* =========================================================
+   HOVER EFFECT
+========================================================= */
+.form-group input:hover,
+.form-group select:hover{
+    border-color:#93c5fd;
+}
+
+/* =========================================================
+   PLACEHOLDER OPTION
+========================================================= */
+.form-group select option[value=""]{
+    color:#94a3b8;
+}
+
+/* =========================================================
+   DATE INPUT
+========================================================= */
+.form-group input[type="date"]{
+    cursor:pointer;
+}
+
+.form-group input[type="date"]::-webkit-calendar-picker-indicator{
+    opacity:0.7;
+    cursor:pointer;
+    transition:0.2s ease;
+}
+
+.form-group input[type="date"]::-webkit-calendar-picker-indicator:hover{
+    opacity:1;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media(max-width:500px){
+
+    .form-group input,
+    .form-group select{
+        padding:15px;
+        font-size:14px;
+    }
+}
+
+/* =========================================================
+   APPOINTMENT ACTIONS
+========================================================= */
+.appointment-actions{
+    margin-top:22px;
+
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.action-btn{
+    flex:1;
+
+    padding:13px 16px;
+
+    border:none;
+    border-radius:14px;
+
+    font-size:14px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    text-decoration:none;
+    text-align:center;
+
+    transition:0.3s ease;
+}
+
+/* =========================================================
+   DOWNLOAD BUTTON
+========================================================= */
+.download-btn{
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #3b82f6
+        );
+
+    color:white;
+}
+
+.download-btn:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 10px 20px rgba(37,99,235,0.25);
+}
+
+/* =========================================================
+   CANCEL BUTTON
+========================================================= */
+.cancel-btn{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.cancel-btn:hover{
+    background:#fecaca;
+}
+
+/* =========================================================
+   STATUS BADGES
+========================================================= */
+.pending{
+    background:#fff7ed;
+    color:#ea580c;
+}
+
+.approved{
+    background:#eff6ff;
+    color:#2563eb;
+}
+
+.completed{
+    background:#ecfdf5;
+    color:#16a34a;
+}
+
+.cancelled{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+/* =========================================================
+   TIME NOTE
+========================================================= */
+.time-note{
+    display:block;
+
+    margin-top:10px;
+
+    font-size:13px;
+    font-weight:600;
+
+    color:#64748b;
+
+    line-height:1.5;
+}
+
+/* =========================================================
+   HIDE TIME FIELD SMOOTHLY
+========================================================= */
+#timeWrapper{
+    transition:0.3s ease;
+}
+
+/* =========================================================
+   APPOINTMENT CARD IMPROVEMENT
+========================================================= */
+.appointment-card{
+    position:relative;
+    overflow:hidden;
+}
+
+.appointment-card::before{
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:5px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #2563eb,
+            #60a5fa
+        );
+}
+
+/* =========================================================
+   APPROVED CARD STYLE
+========================================================= */
+.appointment-card.approved-card{
+    border-color:#bfdbfe;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #eff6ff
+        );
+}
+
+/* =========================================================
+   PENDING CARD STYLE
+========================================================= */
+.appointment-card.pending-card{
+    border-color:#fed7aa;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #fff7ed
+        );
+}
+
+/* =========================================================
+   CANCELLED CARD STYLE
+========================================================= */
+.appointment-card.cancelled-card{
+    opacity:0.85;
+
+    border-color:#fecaca;
+}
+
+/* =========================================================
+   FORM NOTE BOX
+========================================================= */
+.booking-note{
+    background:#eff6ff;
+
+    border:1px solid #bfdbfe;
+
+    padding:14px 16px;
+
+    border-radius:16px;
+
+    font-size:13px;
+    font-weight:600;
+
+    color:#1e40af;
+
+    line-height:1.6;
+}
+
+/* =========================================================
+   DISABLED TIME FIELD
+========================================================= */
+.disabled-field{
+    opacity:0.5;
+    pointer-events:none;
+}
+
+/* =========================================================
+   MODAL BUTTON FULL WIDTH
+========================================================= */
+.full-btn{
+    width:100%;
+}
+
+/* =========================================================
+   APPOINTMENT TYPE COLORS
+========================================================= */
+.appointment-header h3{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.appointment-header h3::before{
+    content:"";
+
+    width:10px;
+    height:10px;
+
+    border-radius:50%;
+
+    background:#2563eb;
+}
+
+/* =========================================================
+   RESPONSIVE BUTTONS
+========================================================= */
+@media(max-width:600px){
+
+    .appointment-actions{
+        flex-direction:column;
+    }
+
+    .action-btn{
+        width:100%;
+    }
+}
+/* ================= ALERT SYSTEM ================= */
+
+.alert-container{
+    margin-bottom: 15px;
+}
+
+.alert-message{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 14px 16px;
+    border-radius: 8px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    margin-bottom: 12px;
+
+    animation: fadeIn 0.3s ease;
+}
+
+/* ERROR (default Django error) */
+.alert-message.error{
+    background: #ffe6e6;
+    color: #b30000;
+    border-left: 5px solid #ff4d4d;
+}
+
+/* SUCCESS */
+.alert-message.success{
+    background: #e6ffed;
+    color: #006622;
+    border-left: 5px solid #28a745;
+}
+
+/* CLOSE BUTTON */
+.close-alert{
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: inherit;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

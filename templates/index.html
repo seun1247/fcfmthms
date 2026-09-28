@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FCFMT Clinic Management System</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+<section class="hero">
+
+    <div class="hero-slider">
+
+        <img src="{% static 'images/clinic1.jpeg' %}" class="slide active">
+        <img src="{% static 'images/clinic2.jpeg' %}" class="slide">
+        <img src="{% static 'images/clinic3.jpeg' %}" class="slide">
+
+    </div>
+
+
+    <div class="hero-content">
+
+        <nav>
+
+            <div class="logo">
+                <img src="{% static 'images/logo.png' %}" alt="FCFMT LOGO">
+
+                <h3>FCFMT MEDICAL CENTER</h3>    
+            </div>
+
+            
+
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="/register/">Register</a></li>
+                <li><a href="{% url 'login' %}">Appointment</a></li>
+                <li><a href="{% url 'doctor_login' %}">Admin</a></li>
+            </ul>
+
+        </nav>
+
+
+        <div class="hero-text">
+
+            <h1>Welcome to FCFMT Medical Center Management System</h1>
+
+            <p>
+                A digital system that helps students register for medical services,
+                book appointments, request emergency care and manage their medical
+                records easily.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="/register/" class="btn">Register Student</a>
+                <a href="{% url 'login' %}" class="btn">Book Appointment</a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="services">
+
+    <h2>System Services</h2>
+
+    <div class="service-container">
+
+        <div class="service-box">
+            <h3>Student Registration</h3>
+            <p>Create a medical profile for students visiting the clinic.</p>
+        </div>
+
+        <div class="service-box">
+            <h3>Medical Appointment</h3>
+            <p>Students can book appointments with doctors online.</p>
+        </div>
+
+        <div class="service-box">
+            <h3>Emergency Care</h3>
+            <p>Students with urgent health problems can request immediate care.</p>
+        </div>
+
+        <div class="service-box">
+            <h3>Medical Records</h3>
+            <p>Doctors can store diagnoses, treatments and medical history.</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<section class="about" id="about">
+
+    <h2>About the Clinic</h2>
+
+    <p>
+        The medical clinic at the Federal College of Fisheries and Marine
+        Technology provides healthcare services to students and staff.
+        This system helps improve clinic operations by managing
+        registration, appointments and medical records digitally.
+    </p>
+
+</section>
+
+
+<footer>
+
+    <p>FCFMT Clinic Management System</p>
+    <p>© 2026 Federal College of Fisheries and Marine Technology</p>
+
+</footer>
+
+<script src="{% static 'js/slider.js' %}"></script>
+
+</body>
+</html>

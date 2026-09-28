@@ -1,0 +1,125 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:#f4f6fb;
+}
+.auth-body{
+    background:linear-gradient(135deg,#004080,#0066cc);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:Arial, sans-serif;
+}
+
+/* LOGIN BOX */
+
+.login-container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.login-box{
+    background:white;
+    padding:40px;
+    width:350px;
+    border-radius:10px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.2);
+    text-align:center;
+    animation:fadeIn 0.6s ease;
+}
+
+.login-box h2{
+    color:#004080;
+    margin-bottom:5px;
+}
+
+.subtitle{
+    color:#777;
+    margin-bottom:25px;
+}
+
+/* INPUT FLOAT EFFECT */
+
+.input-group{
+    position:relative;
+    margin-bottom:25px;
+}
+
+.input-group input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    outline:none;
+}
+
+.input-group label{
+    position:absolute;
+    top:12px;
+    left:12px;
+    color:#888;
+    font-size:14px;
+    transition:0.3s;
+    background:white;
+    padding:0 5px;
+}
+
+.input-group input:focus + label,
+.input-group input:valid + label{
+    top:-8px;
+    font-size:12px;
+    color:#004080;
+}
+
+/* BUTTON */
+
+.btn-primary{
+    width:100%;
+    padding:12px;
+    background:#004080;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn-primary:hover{
+    background:#0066cc;
+    transform:translateY(-2px);
+}
+
+/* BACK LINK */
+
+.back-home{
+    display:inline-block;
+    margin-top:15px;
+    text-decoration:none;
+    color:#004080;
+}
+
+.back-home:hover{
+    text-decoration:underline;
+}
+.back-reg{
+    display:inline-block;
+    margin-top:15px;
+    text-decoration:none;
+    color:#004080;
+}
+.back-reg:hover{
+    text-decoration:underline;
+}
+
+/* ERROR */
+
+.error{
+    color:red;
+    margin-bottom:15px;
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Doctor Login</title>
+
+    {% load static %}
+
+    <link rel="stylesheet"
+          href="{% static 'css/doctor-login.css' %}">
+
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <h1>Doctor Portal</h1>
+
+        <p>
+            Login to access assigned patients
+        </p>
+
+        <!-- MESSAGES -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert-message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- LOGIN FORM -->
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <!-- DOCTOR ID -->
+            <div class="form-group">
+
+                <label>Doctor ID</label>
+
+                <input type="text"
+                       name="doctor_id"
+                       placeholder="Enter Doctor ID"
+                       required>
+
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="form-group">
+
+                <label>Password</label>
+
+                <input type="password"
+                       name="password"
+                       placeholder="Enter Password"
+                       required>
+
+            </div>
+
+            <!-- BUTTON -->
+            <button type="submit"
+                    class="login-btn">
+
+                Login
+
+            </button>
+
+            <a href="{% url 'home' %}" class="back-home">← Back to Home</a>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>
