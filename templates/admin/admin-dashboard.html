@@ -1,990 +1,794 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-
+    <link rel="icon" type="image/png" href="{% static 'images/logo.png' %}">
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
 </head>
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
-<div class="admin-nav">
-    <div>
-        <h2>Hospital Admin Dashboard</h2>
-        <p>Manage students, doctors and appointments</p>
+    <!-- ================= NAVBAR ================= -->
+    <div class="admin-nav">
+        <div>
+            <h2>Hospital Admin Dashboard</h2>
+            <p>Manage students, doctors and appointments</p>
+        </div>
+
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
     </div>
 
-    <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
-</div>
+    <!-- ================= MAIN LAYOUT ================= -->
+    <div class="admin-layout">
 
-<!-- ================= MAIN LAYOUT ================= -->
-<div class="admin-layout">
+        <!-- ================= SIDEBAR ================= -->
+        <aside class="sidebar">
 
-    <!-- ================= SIDEBAR ================= -->
-    <aside class="sidebar">
+            <h3>Navigation</h3>
 
-        <h3>Navigation</h3>
+            <a href="?tab=overview" class="{% if active_tab == 'overview' %}active-link{% endif %}">
+                Dashboard
+            </a>
 
-        <a href="?tab=overview"
-           class="{% if active_tab == 'overview' %}active-link{% endif %}">
-           Dashboard
-        </a>
+            <a href="?tab=students" class="{% if active_tab == 'students' %}active-link{% endif %}">
+                Students
+            </a>
 
-        <a href="?tab=students"
-           class="{% if active_tab == 'students' %}active-link{% endif %}">
-           Students
-        </a>
+            <a href="?tab=appointments" class="{% if active_tab == 'appointments' %}active-link{% endif %}">
+                Appointments
+            </a>
 
-        <a href="?tab=appointments"
-           class="{% if active_tab == 'appointments' %}active-link{% endif %}">
-           Appointments
-        </a>
+            <a href="?tab=doctors" class="{% if active_tab == 'doctors' %}active-link{% endif %}">
+                Doctors
+            </a>
 
-        <a href="?tab=doctors"
-           class="{% if active_tab == 'doctors' %}active-link{% endif %}">
-           Doctors
-        </a>
+        </aside>
 
-    </aside>
+        <!-- ================= CONTENT ================= -->
+        <main class="main-content">
 
-    <!-- ================= CONTENT ================= -->
-    <main class="main-content">
+            <!-- ================= OVERVIEW ================= -->
+            {% if active_tab == 'overview' %}
 
-        <!-- ================= OVERVIEW ================= -->
-        {% if active_tab == 'overview' %}
-
-        <div class="page-title">
-            <h1>System Overview</h1>
-            <p>Realtime hospital statistics</p>
-        </div>
-
-        <div class="stats-grid">
-
-            <div class="stat-card">
-                <h3>Total Students</h3>
-                <h1>{{ total_students }}</h1>
+            <div class="page-title">
+                <h1>System Overview</h1>
+                <p>Realtime hospital statistics</p>
             </div>
 
-            <div class="stat-card">
-                <h3>Total Appointments</h3>
-                <h1>{{ total_appointments }}</h1>
-            </div>
+            <div class="stats-grid">
 
-            <div class="stat-card">
-                <h3>Total Doctors</h3>
-                <h1>{{ doctors.count }}</h1>
-            </div>
+                <div class="stat-card">
+                    <h3>Total Students</h3>
+                    <h1>{{ total_students }}</h1>
+                </div>
 
-        </div>
+                <div class="stat-card">
+                    <h3>Total Appointments</h3>
+                    <h1>{{ total_appointments }}</h1>
+                </div>
 
-        {% endif %}
-
-        <!-- ================= STUDENTS ================= -->
-        {% if active_tab == 'students' %}
-
-        <div class="table-card">
-
-            <div class="table-header">
-                <h2>Registered Students</h2>
-            </div>
-
-            <div class="search-filter-bar">
-
-                <input
-                    type="text"
-                    id="studentSearch"
-                    placeholder="Search student name or reg number..."
-                    onkeyup="filterStudents()"
-                >
-
-                <select id="departmentFilter" onchange="filterStudents()">
-                    <option value="">All Departments</option>
-                    <option value="Marine Engineering">Marine Engineering</option>
-                    <option value="Nautical Science">Nautical Science</option>
-                    <option value="Fisheries Technology">Fisheries Technology</option>
-                    <option value="Marine Transport and Business Studies">
-                        Marine Transport and Business Studies
-                    </option>
-                    <option value="Oceanography">Oceanography</option>
-                    <option value="Computer Science">Computer Science</option>
-                </select>
+                <div class="stat-card">
+                    <h3>Total Doctors</h3>
+                    <h1>{{ doctors.count }}</h1>
+                </div>
 
             </div>
 
-            <table class="admin-table">
+            {% endif %}
 
-                <tr>
-                    <th>Name</th>
-                    <th>Reg Number</th>
-                    <th>Department</th>
-                    <th>Action</th>
-                </tr>
+            <!-- ================= STUDENTS ================= -->
+            {% if active_tab == 'students' %}
 
-                {% for s in students %}
-                <tr class="student-row">
-                    <td>{{ s.full_name }}</td>
-                    <td>{{ s.reg_number }}</td>
-                    <td>{{ s.department }}</td>
+            <div class="table-card">
 
-                    <td class="action-buttons">
+                <div class="table-header">
+                    <h2>Registered Students</h2>
+                </div>
 
-                        <button
-                            class="primary-btn"
+                <div class="search-filter-bar">
 
-                            data-id="{{ s.id }}"
-                            data-name="{{ s.full_name }}"
-                            data-reg="{{ s.reg_number }}"
-                            data-department="{{ s.department }}"
-                            data-level="{{ s.level }}"
-                            data-dob="{{ s.date_of_birth|date:'Y-m-d' }}"
-                            data-phone="{{ s.phone }}"
-                            data-email="{{ s.email }}"
-                            data-blood="{{ s.blood_group }}"
-                            data-genotype="{{ s.genotype }}"
-                            data-address="{{ s.address }}"
-                            data-emergency="{{ s.emergency_contact }}"
+                    <input type="text" id="studentSearch" placeholder="Search student name or reg number..."
+                        onkeyup="filterStudents()">
 
-                            onclick="openEditModal(this)"
-                        >
-                            Edit
-                        </button>
+                    <select id="departmentFilter" onchange="filterStudents()">
+                        <option value="">All Departments</option>
+                        <option value="Marine Engineering">Marine Engineering</option>
+                        <option value="Nautical Science">Nautical Science</option>
+                        <option value="Fisheries Technology">Fisheries Technology</option>
+                        <option value="Marine Transport and Business Studies">
+                            Marine Transport and Business Studies
+                        </option>
+                        <option value="Oceanography">Oceanography</option>
+                        <option value="Computer Science">Computer Science</option>
+                    </select>
 
-                        <a href="{% url 'admin_student_card' s.id %}"
-                        class="success-btn">
-                        View Card
-                        </a>
+                </div>
 
-                        <a href="{% url 'delete_student' s.id %}"
-                        class="danger-btn">
-                        Delete
-                        </a>
+                <table class="admin-table">
 
-                    </td>
-                </tr>
-                {% endfor %}
+                    <tr>
+                        <th>Name</th>
+                        <th>Reg Number</th>
+                        <th>Department</th>
+                        <th>Action</th>
+                    </tr>
 
-            </table>
+                    {% for s in students %}
+                    <tr class="student-row">
+                        <td>{{ s.full_name }}</td>
+                        <td>{{ s.reg_number }}</td>
+                        <td>{{ s.department }}</td>
 
-        </div>
+                        <td class="action-buttons">
 
-        {% endif %}
+                            <button class="primary-btn" data-id="{{ s.id }}" data-name="{{ s.full_name }}"
+                                data-reg="{{ s.reg_number }}" data-department="{{ s.department }}"
+                                data-level="{{ s.level }}" data-dob="{{ s.date_of_birth|date:'Y-m-d' }}"
+                                data-phone="{{ s.phone }}" data-email="{{ s.email }}" data-blood="{{ s.blood_group }}"
+                                data-genotype="{{ s.genotype }}" data-address="{{ s.address }}"
+                                data-emergency="{{ s.emergency_contact }}" onclick="openEditModal(this)">
+                                Edit
+                            </button>
 
-        <!-- ================= APPOINTMENTS ================= -->
-        {% if active_tab == 'appointments' %}
+                            <a href="{% url 'admin_student_card' s.id %}" class="success-btn">
+                                View Card
+                            </a>
 
-        <div class="table-card">
+                            <a href="{% url 'delete_student' s.id %}" class="danger-btn">
+                                Delete
+                            </a>
 
-            <div class="table-header">
-                <h2>Appointments</h2>
-            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
 
-            <div class="search-filter-bar">
-
-                <input
-                    type="text"
-                    id="appointmentSearch"
-                    placeholder="Search student or doctor..."
-                    onkeyup="filterAppointments()"
-                >
-
-                <select id="statusFilter" onchange="filterAppointments()">
-                    <option value="">All Status</option>
-                    <option value="PENDING">PENDING</option>
-                    <option value="APPROVED">APPROVED</option>
-                    <option value="ARRIVED">ARRIVED</option>
-                    <option value="COMPLETED">COMPLETED</option>
-                    <option value="CANCELLED">CANCELLED</option>
-                </select>
+                </table>
 
             </div>
 
-            <table class="admin-table">
+            {% endif %}
 
-                <tr class="appointment-row">
-                    <th>Student</th>
-                    <th>Doctor</th>
-                    <th>Type</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
+            <!-- ================= APPOINTMENTS ================= -->
+            {% if active_tab == 'appointments' %}
 
-                {% for a in appointments %}
-                <tr>
+            <div class="table-card">
 
-                    <td>{{ a.student.full_name }}</td>
+                <div class="table-header">
+                    <h2>Appointments</h2>
+                </div>
 
-                    <td>
-                        {% if a.doctor %}
+                <div class="search-filter-bar">
+
+                    <input type="text" id="appointmentSearch" placeholder="Search student or doctor..."
+                        onkeyup="filterAppointments()">
+
+                    <select id="statusFilter" onchange="filterAppointments()">
+                        <option value="">All Status</option>
+                        <option value="PENDING">PENDING</option>
+                        <option value="APPROVED">APPROVED</option>
+                        <option value="ARRIVED">ARRIVED</option>
+                        <option value="COMPLETED">COMPLETED</option>
+                        <option value="CANCELLED">CANCELLED</option>
+                    </select>
+
+                </div>
+
+                <table class="admin-table">
+
+                    <tr class="appointment-row">
+                        <th>Student</th>
+                        <th>Doctor</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                    {% for a in appointments %}
+                    <tr>
+
+                        <td>{{ a.student.full_name }}</td>
+
+                        <td>
+                            {% if a.doctor %}
                             {{ a.doctor.name }}
-                        {% else %}
+                            {% else %}
                             Not Assigned
-                        {% endif %}
-                    </td>
+                            {% endif %}
+                        </td>
 
-                    <td>{{ a.appointment_type }}</td>
-                    <td>{{ a.date }}</td>
-                    <td>{{ a.time }}</td>
+                        <td>{{ a.appointment_type }}</td>
+                        <td>{{ a.date }}</td>
+                        <td>{{ a.time }}</td>
 
-                    <td>
-                        <span class="status {{ a.status|lower }}">
-                            {{ a.status }}
-                        </span>
-                    </td>
+                        <td>
+                            <span class="status {{ a.status|lower }}">
+                                {{ a.status }}
+                            </span>
+                        </td>
 
-                    <td class="action-buttons">
+                        <td class="action-buttons">
 
-                    <!-- ================= APPROVE ================= -->
-                    {% if a.status == "PENDING" %}
+                            <!-- ================= APPROVE ================= -->
+                            {% if a.status == "PENDING" %}
 
-                    <form method="POST"
-                        action="{% url 'approve_appointment' a.id %}"
-                        class="approve-form">
+                            <form method="POST" action="{% url 'approve_appointment' a.id %}" class="approve-form">
 
-                        {% csrf_token %}
+                                {% csrf_token %}
 
-                        <!-- DOCTOR -->
-                        <select name="doctor" required>
+                                <!-- DOCTOR -->
+                                <select name="doctor" required>
 
-                            <option value="">
-                                Select Doctor
-                            </option>
+                                    <option value="">
+                                        Select Doctor
+                                    </option>
 
-                            {% for d in doctors %}
-                            <option value="{{ d.id }}">
-                                {{ d.name }}
-                            </option>
-                            {% endfor %}
+                                    {% for d in doctors %}
+                                    <option value="{{ d.id }}">
+                                        {{ d.name }}
+                                    </option>
+                                    {% endfor %}
 
-                        </select>
+                                </select>
 
-                        <!-- TIME -->
-                        {% if a.appointment_type != "Freshers" %}
-                        <input type="time"
-                            name="time"
-                            required>
-                        {% endif %}
+                                <!-- TIME -->
+                                {% if a.appointment_type != "Freshers" %}
+                                <input type="time" name="time" required>
+                                {% endif %}
 
-                        <button type="submit"
-                                class="primary-btn">
-                            Approve
-                        </button>
+                                <button type="submit" class="primary-btn">
+                                    Approve
+                                </button>
 
-                    </form>
+                            </form>
 
-                    {% endif %}
+                            {% endif %}
 
-                    <!-- ================= ARRIVED ================= -->
-                    {% if a.status == "APPROVED" %}
+                            <!-- ================= ARRIVED ================= -->
+                            {% if a.status == "APPROVED" %}
 
-                    <a href="{% url 'mark_arrived' a.id %}"
-                    class="success-btn">
-                    Arrived
-                    </a>
+                            <a href="{% url 'mark_arrived' a.id %}" class="success-btn">
+                                Arrived
+                            </a>
 
-                    {% endif %}
+                            {% endif %}
 
-                    <!-- ================= CANCEL ================= -->
-                    {% if a.status != "CANCELLED" and a.status != "COMPLETED" %}
+                            <!-- ================= CANCEL ================= -->
+                            {% if a.status != "CANCELLED" and a.status != "COMPLETED" %}
 
-                    <a href="{% url 'admin_cancel_appointment' a.id %}"
-                    class="danger-btn">
-                    Cancel
-                    </a>
+                            <a href="{% url 'admin_cancel_appointment' a.id %}" class="danger-btn">
+                                Cancel
+                            </a>
 
-                    {% endif %}
+                            {% endif %}
 
-                    <!-- ================= DELETE ================= -->
-                    <a href="{% url 'delete_appointment' a.id %}"
-                    class="danger-btn">
-                    Delete
-                    </a>
+                            <!-- ================= DELETE ================= -->
+                            <a href="{% url 'delete_appointment' a.id %}" class="danger-btn">
+                                Delete
+                            </a>
 
-                    <!-- ================= MEDICAL RECORD ================= -->
-                    {% if a.status == "ARRIVED" or a.status == "APPROVED" or a.status == "COMPLETED" %}
-                    
-                    <!-- =========================================
+                            <!-- ================= MEDICAL RECORD ================= -->
+                            {% if a.status == "ARRIVED" or a.status == "APPROVED" or a.status == "COMPLETED" %}
+
+                            <!-- =========================================
                         ADD MEDICAL RECORD BUTTON
                     ========================================= -->
-                    <div class="medical-btn-group">
+                            <div class="medical-btn-group">
 
-                        <!-- ADD / EDIT -->
-                        <button
-                            type="button"
-                            class="success-btn"
-                            onclick="openMedicalPopup('{{ a.id }}')"
-                        >
-                            {% if a.diagnosis or a.prescription or a.clinic_notes %}
-                                Edit Record
-                            {% else %}
-                                Add Medical Record
-                            {% endif %}
-                        </button>
-
-                        <!-- VIEW -->
-                        {% if a.diagnosis or a.prescription or a.clinic_notes %}
-                        <button
-                            type="button"
-                            class="info-btn"
-                            onclick="openMedicalPopup('{{ a.id }}')"
-                        >
-                            View Record
-                        </button>
-                        {% endif %}
-
-                    </div>
-
-
-
-                    <!-- =========================================
-                        POPUP BOX
-                    ========================================= -->
-                    <div class="popup-overlay"
-                        id="medicalPopup{{ a.id }}">
-
-                        <div class="popup-box">
-
-                            <!-- HEADER -->
-                            <div class="popup-header">
-
-                                <h3>Add Medical Record</h3>
-
-                                <button
-                                    type="button"
-                                    class="popup-close"
-                                    onclick="closeMedicalPopup('{{ a.id }}')"
-                                >
-                                    &times;
+                                <!-- ADD / EDIT -->
+                                <button type="button" class="success-btn" onclick="openMedicalPopup('{{ a.id }}')">
+                                    {% if a.diagnosis or a.prescription or a.clinic_notes %}
+                                    Edit Record
+                                    {% else %}
+                                    Add Medical Record
+                                    {% endif %}
                                 </button>
+
+                                <!-- VIEW -->
+                                {% if a.diagnosis or a.prescription or a.clinic_notes %}
+                                <button type="button" class="info-btn" onclick="openMedicalPopup('{{ a.id }}')">
+                                    View Record
+                                </button>
+                                {% endif %}
 
                             </div>
 
 
 
-                            <!-- FORM -->
-                            <form method="POST"
-                                action="{% url 'add_medical_record' a.id %}"
-                                class="popup-form">
+                            <!-- =========================================
+                        POPUP BOX
+                    ========================================= -->
+                            <div class="popup-overlay" id="medicalPopup{{ a.id }}">
 
-                                {% csrf_token %}
+                                <div class="popup-box">
+
+                                    <!-- HEADER -->
+                                    <div class="popup-header">
+
+                                        <h3>Add Medical Record</h3>
+
+                                        <button type="button" class="popup-close"
+                                            onclick="closeMedicalPopup('{{ a.id }}')">
+                                            &times;
+                                        </button>
+
+                                    </div>
 
 
-                                <!-- DIAGNOSIS -->
-                                <div class="popup-group">
 
-                                    <label>Diagnosis</label>
+                                    <!-- FORM -->
+                                    <form method="POST" action="{% url 'add_medical_record' a.id %}" class="popup-form">
 
-                                    <textarea
-                                        name="diagnosis"
-                                        placeholder="Enter diagnosis..."
-                                        class="popup-input"
-                                    >{{ a.diagnosis }}</textarea>
+                                        {% csrf_token %}
+
+
+                                        <!-- DIAGNOSIS -->
+                                        <div class="popup-group">
+
+                                            <label>Diagnosis</label>
+
+                                            <textarea name="diagnosis" placeholder="Enter diagnosis..."
+                                                class="popup-input">{{ a.diagnosis }}</textarea>
+
+                                        </div>
+
+
+                                        <!-- PRESCRIPTION -->
+                                        <div class="popup-group">
+
+                                            <label>Prescription</label>
+
+                                            <textarea name="prescription" placeholder="Enter prescription..."
+                                                class="popup-input">{{ a.prescription }}</textarea>
+
+                                        </div>
+
+
+                                        <!-- CLINIC NOTES -->
+                                        <div class="popup-group">
+
+                                            <label>Clinic Notes</label>
+
+                                            <textarea name="clinic_notes" placeholder="Enter clinic notes..."
+                                                class="popup-input">{{ a.clinic_notes }}</textarea>
+
+                                        </div>
+
+
+                                        <!-- ACTION BUTTONS -->
+                                        <div class="popup-actions">
+
+                                            <button type="button" class="cancel-btn"
+                                                onclick="closeMedicalPopup('{{ a.id }}')">
+                                                Cancel
+                                            </button>
+
+                                            <button type="submit" class="success-btn">
+                                                Save Record
+                                            </button>
+
+                                        </div>
+
+                                    </form>
 
                                 </div>
 
+                            </div>
 
-                                <!-- PRESCRIPTION -->
-                                <div class="popup-group">
+                            {% endif %}
 
-                                    <label>Prescription</label>
+                        </td>
 
-                                    <textarea
-                                        name="prescription"
-                                        placeholder="Enter prescription..."
-                                        class="popup-input"
-                                    >{{ a.prescription }}</textarea>
+                    </tr>
+                    {% endfor %}
 
-                                </div>
+                </table>
 
+            </div>
 
-                                <!-- CLINIC NOTES -->
-                                <div class="popup-group">
+            {% endif %}
 
-                                    <label>Clinic Notes</label>
+            <!-- ================= DOCTORS ================= -->
+            {% if active_tab == 'doctors' %}
 
-                                    <textarea
-                                        name="clinic_notes"
-                                        placeholder="Enter clinic notes..."
-                                        class="popup-input"
-                                    >{{ a.clinic_notes }}</textarea>
-
-                                </div>
+            <div class="table-card">
 
 
-                                <!-- ACTION BUTTONS -->
-                                <div class="popup-actions">
 
-                                    <button
-                                        type="button"
-                                        class="cancel-btn"
-                                        onclick="closeMedicalPopup('{{ a.id }}')"
-                                    >
-                                        Cancel
-                                    </button>
+                <div class="table-header">
+                    <h2>Doctors</h2>
+                </div>
 
-                                    <button
-                                        type="submit"
-                                        class="success-btn"
-                                    >
-                                        Save Record
-                                    </button>
+                <div class="doctor-toolbar">
 
-                                </div>
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="doctorSearch" placeholder="Search doctors..." onkeyup="filterDoctors()">
+                    </div>
 
-                            </form>
+                    <button class="primary-btn add-btn" onclick="openAddDoctorModal()">
+                        + Add Doctor
+                    </button>
 
-                        </div>
+                </div>
+                <!-- ADD DOCTOR FORM -->
+
+                <!-- DOCTORS TABLE -->
+                <table class="admin-table">
+
+                    <tr>
+                        <th>Name</th>
+                        <th>Department</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Doctor ID</th>
+                        <th>Password</th>
+                        <th>Action</th>
+                    </tr>
+
+                    {% for d in doctors %}
+                    <tr class="doctor-row">
+
+                        <td>{{ d.name }}</td>
+
+                        <td>{{ d.department }}</td>
+
+                        <td>{{ d.phone }}</td>
+
+                        <td>{{ d.email }}</td>
+
+                        <td>
+                            <span class="doctor-id">
+                                {{ d.doctor_id }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="doctor-password">
+                                doctor123
+                            </span>
+                        </td>
+
+                        <td class="action-buttons">
+
+                            <button class="primary-btn" data-id="{{ d.id }}" data-name="{{ d.name }}"
+                                data-department="{{ d.department }}" onclick="openDoctorEditModal(this)"
+                                data-phone="{{ d.phone }}" data-email="{{ d.email }}">
+                                Edit
+                            </button>
+
+                            <a href="{% url 'delete_doctor' d.id %}" class="danger-btn"
+                                onclick="return confirm('Delete this doctor?')">
+                                Delete
+                            </a>
+
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+
+                </table>
+
+                <div class="modal" id="addDoctorModal">
+
+                    <div class="modal-content">
+
+                        <span class="close-btn" onclick="closeAddDoctorModal()">
+                            &times;
+                        </span>
+
+                        <h2>Add Doctor</h2>
+
+                        <form method="POST" action="{% url 'add_doctor' %}" enctype="multipart/form-data"
+                            class="popup-form">
+
+                            {% csrf_token %}
+
+                            <div class="form-group">
+
+                                <label>Doctor Name</label>
+
+                                <input type="text" name="name" required>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>Department</label>
+
+                                <input type="text" name="department" required>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>Phone Number</label>
+
+                                <input type="text" name="phone" required>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>Email Address</label>
+
+                                <input type="email" name="email" required>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label>Doctor Picture</label>
+
+                                <input type="file" name="photo" accept="image/*">
+
+                            </div>
+
+                            <button type="submit" class="primary-btn full-btn">
+                                Add Doctor
+                            </button>
+
+                        </form>
 
                     </div>
 
-                    {% endif %}
-
-                </td>
-
-                </tr>
-                {% endfor %}
-
-            </table>
-
-        </div>
-
-        {% endif %}
-
-        <!-- ================= DOCTORS ================= -->
-        {% if active_tab == 'doctors' %}
-
-        <div class="table-card">
-
-            
-
-            <div class="table-header">
-                <h2>Doctors</h2>
-            </div>
-
-            <div class="doctor-toolbar">
-
-                <div class="search-box">
-                    <span class="search-icon">🔍</span>
-                    <input
-                        type="text"
-                        id="doctorSearch"
-                        placeholder="Search doctors..."
-                        onkeyup="filterDoctors()"
-                    >
                 </div>
 
-                <button
-                    class="primary-btn add-btn"
-                    onclick="openAddDoctorModal()"
-                >
-                    + Add Doctor
+            </div>
+
+            {% endif %}
+
+        </main>
+
+    </div>
+    <!-- ================= EDIT STUDENT MODAL ================= -->
+
+    <div class="modal" id="editModal">
+
+        <div class="modal-content">
+
+            <span class="close-btn" onclick="closeEditModal()">
+                &times;
+            </span>
+
+            <h2>Edit Student</h2>
+
+            <form method="POST" enctype="multipart/form-data" id="editForm">
+
+                {% csrf_token %}
+
+                <!-- PASSPORT -->
+                <div class="form-group">
+
+                    <label>Upload Passport</label>
+
+                    <input type="file" name="photo" accept="image/*">
+
+                </div>
+
+                <!-- FULL NAME -->
+                <div class="form-group">
+
+                    <label>Full Name</label>
+
+                    <input type="text" name="full_name" id="edit_name" required>
+
+                </div>
+
+                <!-- REG NUMBER -->
+                <div class="form-group">
+
+                    <label>Registration Number</label>
+
+                    <input type="text" name="reg_number" id="edit_reg" required>
+
+                </div>
+
+                <!-- DEPARTMENT -->
+                <div class="form-group">
+
+                    <label>Department</label>
+
+                    <select name="department" id="edit_department" required>
+
+                        <option value="">
+                            Select Department
+                        </option>
+
+                        <option value="Marine Engineering">
+                            Marine Engineering
+                        </option>
+
+                        <option value="Nautical Science">
+                            Nautical Science
+                        </option>
+
+                        <option value="Fisheries Technology">
+                            Fisheries Technology
+                        </option>
+
+                        <option value="Marine Transport and Business Studies">
+                            Marine Transport and Business Studies
+                        </option>
+
+                        <option value="Oceanography">
+                            Oceanography
+                        </option>
+
+                        <option value="Computer Science">
+                            Computer Science
+                        </option>
+
+
+                    </select>
+
+                </div>
+
+                <!-- LEVEL -->
+                <div class="form-group">
+
+                    <label>Level</label>
+
+                    <select name="level" id="edit_level">
+
+                        <option value="ND1">ND1</option>
+                        <option value="ND2">ND2</option>
+                        <option value="HND1">HND1</option>
+                        <option value="HND2">HND2</option>
+
+                    </select>
+
+                </div>
+
+                <!-- DOB -->
+                <div class="form-group">
+
+                    <label>Date of Birth</label>
+
+                    <input type="date" name="date_of_birth" id="edit_dob" required>
+
+                </div>
+
+                <!-- PHONE -->
+                <div class="form-group">
+
+                    <label>Phone Number</label>
+
+                    <input type="text" name="phone" id="edit_phone" required>
+
+                </div>
+
+                <!-- EMAIL -->
+                <div class="form-group">
+
+                    <label>Email Address</label>
+
+                    <input type="email" name="email" id="edit_email" required>
+
+                </div>
+
+                <!-- BLOOD GROUP -->
+                <div class="form-group">
+
+                    <label>Blood Group</label>
+
+                    <select name="blood_group" id="edit_blood">
+
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+
+                    </select>
+
+                </div>
+
+                <!-- GENOTYPE -->
+                <div class="form-group">
+
+                    <label>Genotype</label>
+
+                    <select name="genotype" id="edit_genotype">
+
+                        <option value="AA">AA</option>
+                        <option value="AS">AS</option>
+                        <option value="SS">SS</option>
+                        <option value="AC">AC</option>
+
+                    </select>
+
+                </div>
+
+                <!-- ADDRESS -->
+                <div class="form-group">
+
+                    <label>Address</label>
+
+                    <textarea name="address" id="edit_address"></textarea>
+
+                </div>
+
+                <!-- EMERGENCY -->
+                <div class="form-group">
+
+                    <label>Emergency Contact</label>
+
+                    <input type="text" name="emergency_contact" id="edit_emergency">
+
+                </div>
+
+                <!-- BUTTON -->
+                <button type="submit" class="primary-btn full-btn">
+                    Save Changes
                 </button>
 
-            </div>
-            <!-- ADD DOCTOR FORM -->
-            
-            <!-- DOCTORS TABLE -->
-            <table class="admin-table">
+            </form>
 
-                <tr>
-                    <th>Name</th>
-                    <th>Department</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>Doctor ID</th>
-                    <th>Password</th>
-                    <th>Action</th>
-                </tr>
+        </div>
 
-                {% for d in doctors %}
-                <tr class="doctor-row">
+    </div>
 
-                    <td>{{ d.name }}</td>
+    <div class="modal" id="doctorEditModal">
 
-                    <td>{{ d.department }}</td>
+        <div class="modal-content">
 
-                    <td>{{ d.phone }}</td>
+            <span class="close-btn" onclick="closeDoctorEditModal()">
+                &times;
+            </span>
 
-                    <td>{{ d.email }}</td>
+            <h2>Edit Doctor</h2>
 
-                    <td>
-                        <span class="doctor-id">
-                            {{ d.doctor_id }}
-                        </span>
-                    </td>
+            <form method="POST" enctype="multipart/form-data" id="doctorEditForm">
 
-                    <td>
-                        <span class="doctor-password">
-                            doctor123
-                        </span>
-                    </td>
+                {% csrf_token %}
 
-                    <td class="action-buttons">
-
-                        <button
-                            class="primary-btn"
-                            data-id="{{ d.id }}"
-                            data-name="{{ d.name }}"
-                            data-department="{{ d.department }}"
-                            onclick="openDoctorEditModal(this)"
-                            data-phone="{{ d.phone }}"
-                            data-email="{{ d.email }}"
-                        >
-                            Edit
-                        </button>
-
-                        <a
-                            href="{% url 'delete_doctor' d.id %}"
-                            class="danger-btn"
-                            onclick="return confirm('Delete this doctor?')"
-                        >
-                            Delete
-                        </a>
-
-                    </td>   
-
-                </tr>
-                {% endfor %}
-
-            </table>
-
-            <div class="modal" id="addDoctorModal">
-
-                <div class="modal-content">
-
-                    <span class="close-btn"
-                        onclick="closeAddDoctorModal()">
-                        &times;
-                    </span>
-
-                    <h2>Add Doctor</h2>
-
-                    <form
-                        method="POST"
-                        action="{% url 'add_doctor' %}"
-                        enctype="multipart/form-data"
-                        class="popup-form"
-                    >
-
-                        {% csrf_token %}
-
-                        <div class="form-group">
-
-                            <label>Doctor Name</label>
-
-                            <input
-                                type="text"
-                                name="name"
-                                required
-                            >
-
-                        </div>
-
-                        <div class="form-group">
-
-                            <label>Department</label>
-
-                            <input
-                                type="text"
-                                name="department"
-                                required
-                            >
-
-                        </div>
-
-                        <div class="form-group">
-
-                            <label>Phone Number</label>
-
-                            <input
-                                type="text"
-                                name="phone"
-                                required
-                            >
-
-                        </div>
-
-                        <div class="form-group">
-
-                            <label>Email Address</label>
-
-                            <input
-                                type="email"
-                                name="email"
-                                required
-                            >
-
-                        </div>
-
-                        <div class="form-group">
-
-                            <label>Doctor Picture</label>
-
-                            <input
-                                type="file"
-                                name="photo"
-                                accept="image/*"
-                            >
-
-                        </div>
-
-                        <button
-                            type="submit"
-                            class="primary-btn full-btn"
-                        >
-                            Add Doctor
-                        </button>
-
-                    </form>
-
+                <div class="form-group">
+                    <label>Doctor Picture</label>
+                    <input type="file" name="photo" accept="image/*">
                 </div>
 
-            </div>
+                <div class="form-group">
+                    <label>Doctor Name</label>
+                    <input type="text" name="name" id="doctor_edit_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Department</label>
+                    <input type="text" name="department" id="doctor_edit_department" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number</label>
+
+                    <input type="text" name="phone" id="doctor_edit_phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email Address</label>
+
+                    <input type="email" name="email" id="doctor_edit_email" required>
+                </div>
+
+                <button type="submit" class="primary-btn full-btn">
+                    Save Changes
+                </button>
+
+            </form>
 
         </div>
 
-        {% endif %}
+    </div>
 
-    </main>
-
-</div>
-        <!-- ================= EDIT STUDENT MODAL ================= -->
-
-        <div class="modal" id="editModal">
-
-            <div class="modal-content">
-
-                <span class="close-btn"
-                    onclick="closeEditModal()">
-                    &times;
-                </span>
-
-                <h2>Edit Student</h2>
-
-                <form
-                    method="POST"
-                    enctype="multipart/form-data"
-                    id="editForm"
-                >
-
-                    {% csrf_token %}
-
-                    <!-- PASSPORT -->
-                    <div class="form-group">
-
-                        <label>Upload Passport</label>
-
-                        <input
-                            type="file"
-                            name="photo"
-                            accept="image/*"
-                        >
-
-                    </div>
-
-                    <!-- FULL NAME -->
-                    <div class="form-group">
-
-                        <label>Full Name</label>
-
-                        <input
-                            type="text"
-                            name="full_name"
-                            id="edit_name"
-                            required
-                        >
-
-                    </div>
-
-                    <!-- REG NUMBER -->
-                    <div class="form-group">
-
-                        <label>Registration Number</label>
-
-                        <input
-                            type="text"
-                            name="reg_number"
-                            id="edit_reg"
-                            required
-                        >
-
-                    </div>
-
-                    <!-- DEPARTMENT -->
-                    <div class="form-group">
-
-                        <label>Department</label>
-
-                        <select
-                            name="department"
-                            id="edit_department"
-                            required
-                        >
-
-                            <option value="">
-                                Select Department
-                            </option>
-
-                            <option value="Marine Engineering">
-                                Marine Engineering
-                            </option>
-
-                            <option value="Nautical Science">
-                                Nautical Science
-                            </option>
-
-                            <option value="Fisheries Technology">
-                                Fisheries Technology
-                            </option>
-
-                            <option value="Marine Transport and Business Studies">
-                                Marine Transport and Business Studies
-                            </option>
-
-                            <option value="Oceanography">
-                                Oceanography
-                            </option>
-
-                            <option value="Computer Science">
-                                Computer Science
-                            </option>
-
-
-                        </select>
-
-                    </div>
-
-                    <!-- LEVEL -->
-                    <div class="form-group">
-
-                        <label>Level</label>
-
-                        <select
-                            name="level"
-                            id="edit_level"
-                        >
-
-                            <option value="ND1">ND1</option>
-                            <option value="ND2">ND2</option>
-                            <option value="HND1">HND1</option>
-                            <option value="HND2">HND2</option>
-
-                        </select>
-
-                    </div>
-
-                    <!-- DOB -->
-                    <div class="form-group">
-
-                        <label>Date of Birth</label>
-
-                        <input
-                            type="date"
-                            name="date_of_birth"
-                            id="edit_dob"
-                            required
-                        >
-
-                    </div>
-
-                    <!-- PHONE -->
-                    <div class="form-group">
-
-                        <label>Phone Number</label>
-
-                        <input
-                            type="text"
-                            name="phone"
-                            id="edit_phone"
-                            required
-                        >
-
-                    </div>
-
-                    <!-- EMAIL -->
-                    <div class="form-group">
-
-                        <label>Email Address</label>
-
-                        <input
-                            type="email"
-                            name="email"
-                            id="edit_email"
-                            required
-                        >
-
-                    </div>
-
-                    <!-- BLOOD GROUP -->
-                    <div class="form-group">
-
-                        <label>Blood Group</label>
-
-                        <select
-                            name="blood_group"
-                            id="edit_blood"
-                        >
-
-                            <option value="A+">A+</option>
-                            <option value="A-">A-</option>
-                            <option value="B+">B+</option>
-                            <option value="B-">B-</option>
-                            <option value="AB+">AB+</option>
-                            <option value="AB-">AB-</option>
-                            <option value="O+">O+</option>
-                            <option value="O-">O-</option>
-
-                        </select>
-
-                    </div>
-
-                    <!-- GENOTYPE -->
-                    <div class="form-group">
-
-                        <label>Genotype</label>
-
-                        <select
-                            name="genotype"
-                            id="edit_genotype"
-                        >
-
-                            <option value="AA">AA</option>
-                            <option value="AS">AS</option>
-                            <option value="SS">SS</option>
-                            <option value="AC">AC</option>
-
-                        </select>
-
-                    </div>
-
-                    <!-- ADDRESS -->
-                    <div class="form-group">
-
-                        <label>Address</label>
-
-                        <textarea
-                            name="address"
-                            id="edit_address"
-                        ></textarea>
-
-                    </div>
-
-                    <!-- EMERGENCY -->
-                    <div class="form-group">
-
-                        <label>Emergency Contact</label>
-
-                        <input
-                            type="text"
-                            name="emergency_contact"
-                            id="edit_emergency"
-                        >
-
-                    </div>
-
-                    <!-- BUTTON -->
-                    <button
-                        type="submit"
-                        class="primary-btn full-btn"
-                    >
-                        Save Changes
-                    </button>
-
-                </form>
-
-            </div>
-
-        </div>
-
-        <div class="modal" id="doctorEditModal">
-
-            <div class="modal-content">
-
-                <span class="close-btn"
-                    onclick="closeDoctorEditModal()">
-                    &times;
-                </span>
-
-                <h2>Edit Doctor</h2>
-
-                <form
-                    method="POST"
-                    enctype="multipart/form-data"
-                    id="doctorEditForm"
-                >
-
-                    {% csrf_token %}
-
-                    <div class="form-group">
-                        <label>Doctor Picture</label>
-                        <input
-                            type="file"
-                            name="photo"
-                            accept="image/*"
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label>Doctor Name</label>
-                        <input
-                            type="text"
-                            name="name"
-                            id="doctor_edit_name"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label>Department</label>
-                        <input
-                            type="text"
-                            name="department"
-                            id="doctor_edit_department"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label>Phone Number</label>
-
-                        <input
-                            type="text"
-                            name="phone"
-                            id="doctor_edit_phone"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label>Email Address</label>
-
-                        <input
-                            type="email"
-                            name="email"
-                            id="doctor_edit_email"
-                            required
-                        >
-                    </div>
-
-                    <button
-                        type="submit"
-                        class="primary-btn full-btn"
-                    >
-                        Save Changes
-                    </button>
-
-                </form>
-
-            </div>
-
-        </div>
-
-        <script>
+    <script>
 
         function openEditModal(button) {
 
@@ -1034,24 +838,24 @@
 
         }
 
-        </script>
-        <script>
+    </script>
+    <script>
 
-        function openMedicalPopup(id){
+        function openMedicalPopup(id) {
             document.getElementById(`medicalPopup${id}`).style.display = "flex";
         }
 
-        function closeMedicalPopup(id){
+        function closeMedicalPopup(id) {
             document.getElementById(`medicalPopup${id}`).style.display = "none";
         }
 
 
         /* CLOSE WHEN CLICKING OUTSIDE */
-        window.addEventListener("click", function(e){
+        window.addEventListener("click", function (e) {
 
             document.querySelectorAll(".popup-overlay").forEach(popup => {
 
-                if(e.target === popup){
+                if (e.target === popup) {
                     popup.style.display = "none";
                 }
 
@@ -1059,176 +863,177 @@
 
         });
 
-        </script>
-        <script>
+    </script>
+    <script>
 
-            /* ================= STUDENT FILTER ================= */
+        /* ================= STUDENT FILTER ================= */
 
-            function filterStudents() {
+        function filterStudents() {
 
-                let search =
-                    document.getElementById("studentSearch")
+            let search =
+                document.getElementById("studentSearch")
                     .value
                     .toLowerCase();
 
-                let department =
-                    document.getElementById("departmentFilter")
+            let department =
+                document.getElementById("departmentFilter")
                     .value
                     .toLowerCase();
 
-                let rows =
-                    document.querySelectorAll(".student-row");
+            let rows =
+                document.querySelectorAll(".student-row");
 
-                rows.forEach(row => {
+            rows.forEach(row => {
 
-                    let name =
-                        row.children[0].innerText.toLowerCase();
+                let name =
+                    row.children[0].innerText.toLowerCase();
 
-                    let reg =
-                        row.children[1].innerText.toLowerCase();
+                let reg =
+                    row.children[1].innerText.toLowerCase();
 
-                    let dept =
-                        row.children[2].innerText.toLowerCase();
+                let dept =
+                    row.children[2].innerText.toLowerCase();
 
-                    let matchesSearch =
-                        name.includes(search) ||
-                        reg.includes(search);
+                let matchesSearch =
+                    name.includes(search) ||
+                    reg.includes(search);
 
-                    let matchesDepartment =
-                        department === "" ||
-                        dept.includes(department);
+                let matchesDepartment =
+                    department === "" ||
+                    dept.includes(department);
 
-                    if(matchesSearch && matchesDepartment){
+                if (matchesSearch && matchesDepartment) {
 
-                        row.style.display = "";
+                    row.style.display = "";
 
-                    } else {
+                } else {
 
-                        row.style.display = "none";
-                    }
+                    row.style.display = "none";
+                }
 
-                });
+            });
 
-            }
+        }
 
 
-            /* ================= APPOINTMENT FILTER ================= */
+        /* ================= APPOINTMENT FILTER ================= */
 
-            function filterAppointments() {
+        function filterAppointments() {
 
-                let search =
-                    document.getElementById("appointmentSearch")
+            let search =
+                document.getElementById("appointmentSearch")
                     .value
                     .toLowerCase();
 
-                let status =
-                    document.getElementById("statusFilter")
+            let status =
+                document.getElementById("statusFilter")
                     .value
                     .toLowerCase();
 
-                let rows =
-                    document.querySelectorAll(".appointment-row");
+            let rows =
+                document.querySelectorAll(".appointment-row");
 
-                rows.forEach(row => {
+            rows.forEach(row => {
 
-                    let student =
-                        row.children[0].innerText.toLowerCase();
+                let student =
+                    row.children[0].innerText.toLowerCase();
 
-                    let doctor =
-                        row.children[1].innerText.toLowerCase();
+                let doctor =
+                    row.children[1].innerText.toLowerCase();
 
-                    let appointmentStatus =
-                        row.children[5].innerText.toLowerCase();
+                let appointmentStatus =
+                    row.children[5].innerText.toLowerCase();
 
-                    let matchesSearch =
-                        student.includes(search) ||
-                        doctor.includes(search);
+                let matchesSearch =
+                    student.includes(search) ||
+                    doctor.includes(search);
 
-                    let matchesStatus =
-                        status === "" ||
-                        appointmentStatus.includes(status);
+                let matchesStatus =
+                    status === "" ||
+                    appointmentStatus.includes(status);
 
-                    if(matchesSearch && matchesStatus){
+                if (matchesSearch && matchesStatus) {
 
-                        row.style.display = "";
+                    row.style.display = "";
 
-                    } else {
+                } else {
 
-                        row.style.display = "none";
-                    }
+                    row.style.display = "none";
+                }
 
-                });
+            });
 
-            }
+        }
 
 
-            /* ================= DOCTOR FILTER ================= */
+        /* ================= DOCTOR FILTER ================= */
 
-            function filterDoctors() {
+        function filterDoctors() {
 
-                let search =
-                    document.getElementById("doctorSearch")
+            let search =
+                document.getElementById("doctorSearch")
                     .value
                     .toLowerCase();
 
-                let rows =
-                    document.querySelectorAll(".doctor-row");
+            let rows =
+                document.querySelectorAll(".doctor-row");
 
-                rows.forEach(row => {
+            rows.forEach(row => {
 
-                    let text =
-                        row.innerText.toLowerCase();
+                let text =
+                    row.innerText.toLowerCase();
 
-                    if(text.includes(search)){
+                if (text.includes(search)) {
 
-                        row.style.display = "";
+                    row.style.display = "";
 
-                    } else {
+                } else {
 
-                        row.style.display = "none";
-                    }
+                    row.style.display = "none";
+                }
 
-                });
-            }
+            });
+        }
 
-            function openDoctorEditModal(button){
+        function openDoctorEditModal(button) {
 
-                document.getElementById("doctorEditModal").style.display = "flex";
+            document.getElementById("doctorEditModal").style.display = "flex";
 
-                document.getElementById("doctor_edit_name").value =
-                    button.dataset.name;
+            document.getElementById("doctor_edit_name").value =
+                button.dataset.name;
 
-                document.getElementById("doctor_edit_department").value =
-                    button.dataset.department;
+            document.getElementById("doctor_edit_department").value =
+                button.dataset.department;
 
-                document.getElementById("doctor_edit_phone").value =
-                    button.dataset.phone;
+            document.getElementById("doctor_edit_phone").value =
+                button.dataset.phone;
 
-                document.getElementById("doctor_edit_email").value =
-                    button.dataset.email;
+            document.getElementById("doctor_edit_email").value =
+                button.dataset.email;
 
-                document.getElementById("doctorEditForm").action =
-                    "/edit-doctor/" + button.dataset.id + "/";
+            document.getElementById("doctorEditForm").action =
+                "/edit-doctor/" + button.dataset.id + "/";
 
-            }
+        }
 
-            function closeDoctorEditModal(){
+        function closeDoctorEditModal() {
 
-                document.getElementById("doctorEditModal").style.display = "none";
+            document.getElementById("doctorEditModal").style.display = "none";
 
-            }
+        }
 
-            function openAddDoctorModal(){
+        function openAddDoctorModal() {
 
-                document.getElementById("addDoctorModal").style.display = "flex";
+            document.getElementById("addDoctorModal").style.display = "flex";
 
-            }
+        }
 
-            function closeAddDoctorModal(){
+        function closeAddDoctorModal() {
 
-                document.getElementById("addDoctorModal").style.display = "none";
+            document.getElementById("addDoctorModal").style.display = "none";
 
-            }
-        </script>
+        }
+    </script>
 </body>
+
 </html>

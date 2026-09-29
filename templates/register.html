@@ -1,9 +1,11 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Student Registration</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/logo.png' %}">
 </head>
 
 <body>
@@ -32,20 +34,20 @@
 
         <label>Department</label>
         <select name="department" required>
-        <option value="">Select Department</option>
-        <option value="Marine Engineering">Marine Engineering</option>
-        <option value="Nautical Science">Nautical Science</option>
-        <option value="Fisheries Technology">Fisheries Technology</option>
-        <option value="Marine Transport and Business Studies">
-        Marine Transport and Business Studies
-        </option>
-        <option value="Oceanography">Oceanography</option>
-        <option value="Computer Science">Computer Science</option>
+            <option value="">Select Department</option>
+            <option value="Marine Engineering">Marine Engineering</option>
+            <option value="Nautical Science">Nautical Science</option>
+            <option value="Fisheries Technology">Fisheries Technology</option>
+            <option value="Marine Transport and Business Studies">
+                Marine Transport and Business Studies
+            </option>
+            <option value="Oceanography">Oceanography</option>
+            <option value="Computer Science">Computer Science</option>
         </select>
 
 
         <label>Level</label>
-            <select name="level">
+        <select name="level">
             <option>ND1</option>
             <option>ND2</option>
             <option>HND1</option>
@@ -61,16 +63,11 @@
         <input type="text" name="phone" required>
 
         <label>Email Address</label>
-        <input
-            type="email"
-            name="email"
-            placeholder="student@email.com"
-            required
-        >
+        <input type="email" name="email" placeholder="student@email.com" required>
 
 
         <label>Blood Group</label>
-            <select name="blood_group">
+        <select name="blood_group">
             <option>A+</option>
             <option>A-</option>
             <option>B+</option>
@@ -83,7 +80,7 @@
 
 
         <label>Genotype</label>
-            <select name="genotype">
+        <select name="genotype">
             <option>AA</option>
             <option>AS</option>
             <option>SS</option>
@@ -108,7 +105,8 @@
     </div>
 
 
-   
-    
+
+
 </body>
+
 </html>
