@@ -1,86 +1,79 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Doctor Login</title>
+    <link rel="icon" type="image/png" href="{% static 'images/logo.png' %}">
 
-    {% load static %}
-
-    <link rel="stylesheet"
-          href="{% static 'css/doctor-login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/doctor-login.css' %}">
 
 </head>
 
 <body>
 
-<div class="login-container">
+    <div class="login-container">
 
-    <div class="login-card">
+        <div class="login-card">
 
-        <h1>Doctor Portal</h1>
+            <h1>Doctor Portal</h1>
 
-        <p>
-            Login to access assigned patients
-        </p>
+            <p>
+                Login to access assigned patients
+            </p>
 
-        <!-- MESSAGES -->
-        {% if messages %}
+            <!-- MESSAGES -->
+            {% if messages %}
             {% for message in messages %}
-                <div class="alert-message">
-                    {{ message }}
-                </div>
+            <div class="alert-message">
+                {{ message }}
+            </div>
             {% endfor %}
-        {% endif %}
+            {% endif %}
 
-        <!-- LOGIN FORM -->
-        <form method="POST">
+            <!-- LOGIN FORM -->
+            <form method="POST">
 
-            {% csrf_token %}
+                {% csrf_token %}
 
-            <!-- DOCTOR ID -->
-            <div class="form-group">
+                <!-- DOCTOR ID -->
+                <div class="form-group">
 
-                <label>Doctor ID</label>
+                    <label>Doctor ID</label>
 
-                <input type="text"
-                       name="doctor_id"
-                       placeholder="Enter Doctor ID"
-                       required>
+                    <input type="text" name="doctor_id" placeholder="Enter Doctor ID" required>
 
-            </div>
+                </div>
 
-            <!-- PASSWORD -->
-            <div class="form-group">
+                <!-- PASSWORD -->
+                <div class="form-group">
 
-                <label>Password</label>
+                    <label>Password</label>
 
-                <input type="password"
-                       name="password"
-                       placeholder="Enter Password"
-                       required>
+                    <input type="password" name="password" placeholder="Enter Password" required>
 
-            </div>
+                </div>
 
-            <!-- BUTTON -->
-            <button type="submit"
-                    class="login-btn">
+                <!-- BUTTON -->
+                <button type="submit" class="login-btn">
 
-                Login
+                    Login
 
-            </button>
+                </button>
 
-            <a href="{% url 'home' %}" class="back-home">← Back to Home</a>
+                <a href="{% url 'home' %}" class="back-home">← Back to Home</a>
 
-        </form>
+            </form>
+
+        </div>
 
     </div>
 
-</div>
-
 </body>
+
 </html>
